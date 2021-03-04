@@ -2,7 +2,7 @@
 # Copyright 2019-2020 by Andrey Ignatov. All Rights Reserved.
 
 from tensorflow.python.ops import rnn_cell
-from ai_benchmark.utils import tf, np
+from utils import tf, np
 
 
 class DiagonalLSTMCell(rnn_cell.RNNCell):

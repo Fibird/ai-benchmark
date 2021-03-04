@@ -1,6 +1,0 @@
-numpy
-psutil
-py-cpuinfo
-pillow
-setuptools
-requests
