@@ -122,7 +122,7 @@ def loadData(test_type, dimensions, data_root):
         data = np.zeros(dimensions)
         for j in range(dimensions[0]):
 
-            image = Image.open(path.join(path.dirname(__file__), data_root + "/classification/" + str(j) + ".jpg"))
+            image = Image.open(path.join(data_root, "classification/" + str(j) + ".jpg"))
             image = resize_image(image, [dimensions[1], dimensions[2]])
             data[j] = image
 
@@ -130,7 +130,7 @@ def loadData(test_type, dimensions, data_root):
 
         data = np.zeros(dimensions)
         for j in range(dimensions[0]):
-            image = Image.open(path.join(path.dirname(__file__), data_root + "/enhancement/" + str(j) + ".jpg"))
+            image = Image.open(path.join(data_root, "enhancement/" + str(j) + ".jpg"))
             image = resize_image(image, [dimensions[1], dimensions[2]])
             data[j] = image
 
@@ -138,7 +138,7 @@ def loadData(test_type, dimensions, data_root):
 
         data = np.zeros(dimensions)
         for j in range(dimensions[0]):
-            image = Image.open(path.join(path.dirname(__file__), data_root + "/segmentation/" + str(j) + ".jpg"))
+            image = Image.open(path.join(data_root, "segmentation/" + str(j) + ".jpg"))
             image = resize_image(image, [dimensions[1], dimensions[2]])
             data[j] = image
 
@@ -165,7 +165,7 @@ def loadTargets(test_type, dimensions, data_root):
 
         data = np.zeros(dimensions)
         for j in range(dimensions[0]):
-            image = Image.open(path.join(path.dirname(__file__), data_root + "/enhancement/" + str(j) + ".jpg"))
+            image = Image.open(path.join(data_root, "enhancement/" + str(j) + ".jpg"))
             image = resize_image(image, [dimensions[1], dimensions[2]])
             data[j] = image
 
@@ -173,7 +173,7 @@ def loadTargets(test_type, dimensions, data_root):
 
         data = np.zeros(dimensions)
         for j in range(dimensions[0]):
-            image = Image.open(path.join(path.dirname(__file__), data_root + "/enhancement/" + str(j) + ".jpg"))
+            image = Image.open(path.join(data_root, "enhancement/" + str(j) + ".jpg"))
             image = resize_image(image, [dimensions[1], dimensions[2]])
             data[j] = image
 
@@ -181,7 +181,7 @@ def loadTargets(test_type, dimensions, data_root):
 
         data = np.zeros(dimensions)
         for j in range(dimensions[0]):
-            image = Image.open(path.join(path.dirname(__file__), data_root + "/segmentation/" + str(j) + "_segmented.jpg"))
+            image = Image.open(path.join(data_root, "segmentation/" + str(j) + "_segmented.jpg"))
             image = resize_image(image, [dimensions[1], dimensions[2]])
             data[j] = image
 
@@ -529,7 +529,7 @@ def run_tests(training, inference, micro, verbose, use_CPU, precision, _type, st
     benchmark_tests = TestConstructor().getTests()
     benchmark_results = BenchmarkResults()
     public_results = PublicResults()
-    os.chdir(path.dirname(__file__))
+    # os.chdir(path.dirname(__file__))
 
     iter_multiplier = 1
     if precision == "high":
@@ -660,5 +660,5 @@ def run_tests(training, inference, micro, verbose, use_CPU, precision, _type, st
     testInfo.results = benchmark_results
     public_results = printScores(testInfo, public_results)
 
-    os.chdir(start_dir)
+    # os.chdir(start_dir)
     return public_results
