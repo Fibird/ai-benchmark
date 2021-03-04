@@ -15,9 +15,9 @@ import cpuinfo
 import time
 import os
 
-from ai_benchmark.update_utils import update_info
-from ai_benchmark.config import TestConstructor
-from ai_benchmark.models import *
+from update_utils import update_info
+from config import TestConstructor
+from models import *
 
 MAX_TEST_DURATION = 100
 

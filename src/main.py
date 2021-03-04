@@ -2,7 +2,7 @@
 # Copyright 2019-2020 by Andrey Ignatov. All Rights Reserved.
 
 from __future__ import print_function
-from ai_benchmark.utils import *
+from utils import *
 import sys
 
 class AIBenchmark:

@@ -5,6 +5,6 @@ RUN pip3 install --upgrade tensorflow && \
 
 WORKDIR /ai_benchmark
 
-ADD ai_benchmark /ai_benchmark
+ADD src /ai_benchmark
 
-CMD ["python3", "/ai_benchmark/__init__.py", "/tmp/bench_data/"]
+CMD ["python3", "/ai_benchmark/main.py", "/tmp/bench_data/"]
