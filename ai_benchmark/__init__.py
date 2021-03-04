@@ -3,14 +3,15 @@
 
 from __future__ import print_function
 from ai_benchmark.utils import *
-
+import sys
 
 class AIBenchmark:
 
-    def __init__(self, use_CPU=None, verbose_level=1):
+    def __init__(self, use_CPU=None, verbose_level=1, data_dir="data/"):
 
         self.tf_ver_2 = parse_version(tf.__version__) > parse_version('1.99')
         self.verbose = verbose_level
+        self.data_root = data_dir
 
         if verbose_level > 0:
             printIntro()
@@ -61,23 +62,31 @@ class AIBenchmark:
 
     def run(self, precision="normal"):
         return run_tests(training=True, inference=True, micro=False, verbose=self.verbose,
-                         use_CPU=self.use_CPU, precision=precision, _type="full", start_dir=self.cwd)
+                         use_CPU=self.use_CPU, precision=precision, _type="full", start_dir=self.cwd,
+                         data_root=self.data_root)
 
     def run_inference(self, precision="normal"):
         return run_tests(training=False, inference=True, micro=False, verbose=self.verbose,
-                         use_CPU=self.use_CPU, precision=precision, _type="inference", start_dir=self.cwd)
+                         use_CPU=self.use_CPU, precision=precision, _type="inference", start_dir=self.cwd,
+                         data_root=self.data_root)
 
     def run_training(self, precision="normal"):
         return run_tests(training=True, inference=False, micro=False, verbose=self.verbose,
-                         use_CPU=self.use_CPU, precision=precision, _type="training", start_dir=self.cwd)
+                         use_CPU=self.use_CPU, precision=precision, _type="training", start_dir=self.cwd,
+                         data_root=self.data_root)
 
     def run_micro(self, precision="normal"):
         return run_tests(training=False, inference=False, micro=True, verbose=self.verbose,
-                         use_CPU=self.use_CPU, precision=precision, _type="micro", start_dir=self.cwd)
+                         use_CPU=self.use_CPU, precision=precision, _type="micro", start_dir=self.cwd,
+                         data_root=self.data_root)
 
 
 if __name__ == "__main__":
-
-    benchmark = AIBenchmark(use_CPU=None, verbose_level=1)
-    results = benchmark.run(precision="normal")
+    if len(sys.argv) > 1:
+        data_dir = sys.argv[1]
+        benchmark = AIBenchmark(use_CPU=None, verbose_level=1, data_dir=data_dir)
+        results = benchmark.run(precision="normal")
+    else:
+        benchmark = AIBenchmark(use_CPU=None, verbose_level=1)
+        results = benchmark.run(precision="normal")
 

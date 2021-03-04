@@ -114,7 +114,7 @@ def resize_image(image, dimensions):
     return image
 
 
-def loadData(test_type, dimensions):
+def loadData(test_type, dimensions, data_root):
 
     data = None
     if test_type == "classification":
@@ -122,7 +122,7 @@ def loadData(test_type, dimensions):
         data = np.zeros(dimensions)
         for j in range(dimensions[0]):
 
-            image = Image.open(path.join(path.dirname(__file__), "data/classification/" + str(j) + ".jpg"))
+            image = Image.open(path.join(path.dirname(__file__), data_root + "/classification/" + str(j) + ".jpg"))
             image = resize_image(image, [dimensions[1], dimensions[2]])
             data[j] = image
 
@@ -130,7 +130,7 @@ def loadData(test_type, dimensions):
 
         data = np.zeros(dimensions)
         for j in range(dimensions[0]):
-            image = Image.open(path.join(path.dirname(__file__), "data/enhancement/" + str(j) + ".jpg"))
+            image = Image.open(path.join(path.dirname(__file__), data_root + "/enhancement/" + str(j) + ".jpg"))
             image = resize_image(image, [dimensions[1], dimensions[2]])
             data[j] = image
 
@@ -138,7 +138,7 @@ def loadData(test_type, dimensions):
 
         data = np.zeros(dimensions)
         for j in range(dimensions[0]):
-            image = Image.open(path.join(path.dirname(__file__), "data/segmentation/" + str(j) + ".jpg"))
+            image = Image.open(path.join(path.dirname(__file__), data_root + "/segmentation/" + str(j) + ".jpg"))
             image = resize_image(image, [dimensions[1], dimensions[2]])
             data[j] = image
 
@@ -152,7 +152,7 @@ def loadData(test_type, dimensions):
     return data
 
 
-def loadTargets(test_type, dimensions):
+def loadTargets(test_type, dimensions, data_root):
 
     data = None
     if test_type == "classification" or test_type == "nlp":
@@ -165,7 +165,7 @@ def loadTargets(test_type, dimensions):
 
         data = np.zeros(dimensions)
         for j in range(dimensions[0]):
-            image = Image.open(path.join(path.dirname(__file__), "data/enhancement/" + str(j) + ".jpg"))
+            image = Image.open(path.join(path.dirname(__file__), data_root + "/enhancement/" + str(j) + ".jpg"))
             image = resize_image(image, [dimensions[1], dimensions[2]])
             data[j] = image
 
@@ -173,7 +173,7 @@ def loadTargets(test_type, dimensions):
 
         data = np.zeros(dimensions)
         for j in range(dimensions[0]):
-            image = Image.open(path.join(path.dirname(__file__), "data/enhancement/" + str(j) + ".jpg"))
+            image = Image.open(path.join(path.dirname(__file__), data_root + "/enhancement/" + str(j) + ".jpg"))
             image = resize_image(image, [dimensions[1], dimensions[2]])
             data[j] = image
 
@@ -181,7 +181,7 @@ def loadTargets(test_type, dimensions):
 
         data = np.zeros(dimensions)
         for j in range(dimensions[0]):
-            image = Image.open(path.join(path.dirname(__file__), "data/segmentation/" + str(j) + "_segmented.jpg"))
+            image = Image.open(path.join(path.dirname(__file__), data_root + "/segmentation/" + str(j) + "_segmented.jpg"))
             image = resize_image(image, [dimensions[1], dimensions[2]])
             data[j] = image
 
@@ -518,7 +518,7 @@ def geometrical_mean(results):
     return results.prod() ** (1.0 / len(results))
 
 
-def run_tests(training, inference, micro, verbose, use_CPU, precision, _type, start_dir):
+def run_tests(training, inference, micro, verbose, use_CPU, precision, _type, start_dir, data_root):
 
     testInfo = TestInfo(_type, precision, use_CPU, verbose)
 
@@ -578,7 +578,7 @@ def run_tests(training, inference, micro, verbose, use_CPU, precision, _type, st
                                 or (i < subTest.min_passes and getTimeSeconds() - time_test_started < MAX_TEST_DURATION) \
                                 or precision == "high":
 
-                            data = loadData(test.type, subTest.getInputDims())
+                            data = loadData(test.type, subTest.getInputDims(), data_root)
                             time_iter_started = getTimeMillis()
                             sess.run(output_, feed_dict={input_: data})
                             inference_time = getTimeMillis() - time_iter_started
@@ -628,8 +628,8 @@ def run_tests(training, inference, micro, verbose, use_CPU, precision, _type, st
                                 or (i < subTest.min_passes and getTimeSeconds() - time_test_started < MAX_TEST_DURATION) \
                                 or precision == "high":
 
-                            data = loadData(test.type, subTest.getInputDims())
-                            target = loadTargets(test.type, subTest.getOutputDims())
+                            data = loadData(test.type, subTest.getInputDims(), data_root)
+                            target = loadTargets(test.type, subTest.getOutputDims(), data_root)
 
                             time_iter_started = getTimeMillis()
                             sess.run(train_step, feed_dict={input_: data, target_: target})
